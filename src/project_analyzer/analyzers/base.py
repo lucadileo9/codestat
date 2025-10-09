@@ -80,7 +80,10 @@ class BaseAnalyzer(ABC):
             
         Returns:
             Tupla (total_lines, blank_lines, lines_content)
-            dove lines_content è la lista delle righe del file
+            dove 
+            - lines_content è la lista delle righe del file
+            - total_lines è il numero totale di righe
+            - blank_lines è il numero di righe vuote
         """
         try:
             with open(file_path, 'r', encoding=encoding) as f:
