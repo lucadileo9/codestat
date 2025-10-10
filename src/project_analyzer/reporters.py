@@ -105,34 +105,54 @@ class ConsoleReporter:
     def print_directory(self, dir_stats: DirectoryStats, indent: int = 0, 
                        is_last: bool = True) -> None:
         """
-        Stampa ricorsivamente le statistiche di una directory.
+        Stampa ricorsivamente le statistiche di una directory, mostrando anche il numero totale di file e righe.
         
         Args:
             dir_stats: Statistiche della directory
             indent: Livello di indentazione
             is_last: Se questa è l'ultima directory al suo livello
         """
+        dir_info = f"({dir_stats.total_files} file, {dir_stats.total_lines} righe)"
         if indent == 0:
             # Root directory
-            print(f"📁 {dir_stats.name}/")
+            print(f"📁 {dir_stats.name}/ {dir_info}")
         else:
             prefix = "  " * (indent - 1)
             connector = "└──" if is_last else "├──"
-            print(f"{prefix}{connector} 📁 {dir_stats.name}/")
-        
+            print(f"{prefix}{connector} 📁 {dir_stats.name}/ {dir_info}")
         # Se verbose, stampa i file
         if self.verbose and dir_stats.files:
             for file_stats in dir_stats.files:
                 self.print_file(file_stats, indent)
-        
         # Stampa ricorsivamente le subdirectory
         for i, subdir in enumerate(dir_stats.subdirectories):
             is_last_subdir = (i == len(dir_stats.subdirectories) - 1)
             self.print_directory(subdir, indent + 1, is_last_subdir)
-        
         # Aggiungi riga vuota dopo ogni directory principale
         if indent == 0:
             print()
+
+    def print_directories_only(self, dir_stats: DirectoryStats, indent: int = 0, is_last: bool = True) -> None:
+        """
+        Stampa solo la struttura delle directory (senza elencare i file), mostrando per ciascuna directory il numero totale di file e righe.
+        Args:
+            dir_stats: Statistiche della directory
+            indent: Livello di indentazione
+            is_last: Se questa è l'ultima directory al suo livello
+        """
+        dir_info = f"({dir_stats.total_files} file, {dir_stats.total_lines} righe)"
+        if indent == 0:
+            print(f"📁 {dir_stats.name}/ {dir_info}")
+        else:
+            prefix = "  " * (indent - 1)
+            connector = "└──" if is_last else "├──"
+            print(f"{prefix}{connector} 📁 {dir_stats.name}/ {dir_info}")
+        for i, subdir in enumerate(dir_stats.subdirectories):
+            is_last_subdir = (i == len(dir_stats.subdirectories) - 1)
+            self.print_directories_only(subdir, indent + 1, is_last_subdir)
+        if indent == 0:
+            print()
+
     
     def print_summary(self, stats: DirectoryStats) -> None:
         """
@@ -211,6 +231,7 @@ class ConsoleReporter:
         if self.verbose:
             self.print_header(project_path)
             self.print_directory(stats)
+            self.print_directories_only(stats)
             self.print_summary(stats)
         else:
             self.print_compact_summary(stats, project_path)
