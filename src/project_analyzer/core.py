@@ -71,8 +71,10 @@ class ProjectAnalyzer:
             self.ignore_dirs.update(ignore_dirs)
         
         # Inizializza gli analyzer
+        from .analyzers.markdown import MarkdownAnalyzer
         self.analyzers: List[BaseAnalyzer] = [
             PythonAnalyzer(),
+            MarkdownAnalyzer(),
             GenericAnalyzer(),
         ]
     

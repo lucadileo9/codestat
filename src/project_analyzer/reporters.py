@@ -96,7 +96,21 @@ class ConsoleReporter:
                 f"Docstring: {docstring_icon}"
             )
             print(python_line)
-        elif file_stats.language != "Python":
+        elif file_stats.language == "Markdown":
+            # Mostra dati Markdown se disponibili
+            md = getattr(file_stats, 'markdown_stats', None)
+            if md:
+                print(f"{prefix}│     📝 Md Details: {md['num_headings']} headings, {md['num_links']} links, {md['num_images']} images")
+                print(f"{prefix}│     🧾 Code blocks: {md['num_code_blocks']} | Tables: {md['num_tables']}")
+                # mostriamo dettaglio headings by level
+                hbl = md.get('headings_by_level', {})
+                if hbl:
+                    levels = ", ".join(f"h{lvl}:{count}" for lvl, count in sorted(hbl.items()) if count > 0)
+                    if levels:
+                        print(f"{prefix}│     🔢 Headings by level: {levels}")
+            else:
+                print(f"{prefix}│     Language: {file_stats.language}")
+        else:
             # Mostra il linguaggio per file non-Python
             print(f"{prefix}│     Language: {file_stats.language}")
         
