@@ -62,7 +62,8 @@ class MarkdownAnalyzer(BaseAnalyzer):
         re_heading = re.compile(r'^\s*(#{1,6})\s+')
         re_image = re.compile(r'!\[[^\]]*\]\([^\)]+\)')
         re_link = re.compile(r'(?<!\!)\[[^\]]+\]\([^\)]+\)')
-        re_table_divider = re.compile(r'^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\s*$')
+        # Allow optional trailing pipe so patterns like '| --- | --- |' match
+        re_table_divider = re.compile(r'^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?\s*$')
 
         for i, raw in enumerate(lines):
             line = raw.rstrip('\n')
