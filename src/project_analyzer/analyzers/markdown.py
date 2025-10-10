@@ -27,6 +27,25 @@ class MarkdownAnalyzer(BaseAnalyzer):
         return file_path.suffix.lower() in self.supported_extensions
 
     def analyze(self, file_path: Path) -> FileStats:
+        """
+        Analyzes a Markdown file to extract statistics such as line counts, headings, links, images, code blocks, and tables.
+        Args:
+            file_path (Path): The path to the Markdown file to analyze.
+        Returns:
+            FileStats: An object containing statistics about the file, including:
+                - total_lines: Total number of lines in the file.
+                - code_lines: Number of non-blank lines.
+                - comment_lines: Always 0 for Markdown.
+                - blank_lines: Number of blank lines.
+                - language: Set to "Markdown".
+                - markdown_stats (dict): Additional Markdown-specific statistics:
+                    - 'headings_by_level': Dict mapping heading levels (1-6) to their counts.
+                    - 'num_headings': Total number of headings.
+                    - 'num_links': Number of Markdown links (excluding images).
+                    - 'num_images': Number of images.
+                    - 'num_code_blocks': Number of fenced code blocks.
+                    - 'num_tables': Number of tables (heuristically detected).
+        """
         # Usa l'helper del BaseAnalyzer per ottenere lines in modo robusto
         total_lines, blank_lines, lines = self._count_lines(file_path)
 
