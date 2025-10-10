@@ -157,6 +157,11 @@ LANGUAGE_MAP: Dict[str, str] = {
     '.cljs': 'ClojureScript',
     '.lisp': 'CommonLisp',
     '.scm': 'Scheme',
+
+    # Markdown
+    '.md': 'Markdown',
+    '.markdown': 'Markdown',
+    '.mdx': 'Markdown',
 }
 
 
