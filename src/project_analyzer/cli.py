@@ -21,7 +21,7 @@ def create_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(
         prog='codestat',
-        description='📊 Analizza progetti software e genera statistiche dettagliate',
+        description='Analizza progetti software e genera statistiche dettagliate',
         epilog='Per maggiori informazioni: https://github.com/lucadileo9/codestat',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -142,11 +142,11 @@ def validate_path(path_str: str) -> Path:
     path = Path(path_str).resolve()
     
     if not path.exists():
-        print(f"❌ Errore: Il path '{path}' non esiste.", file=sys.stderr)
+        print(f"Errore: Il path '{path}' non esiste.", file=sys.stderr)
         sys.exit(1)
     
     if not path.is_dir():
-        print(f"❌ Errore: Il path '{path}' non è una directory.", file=sys.stderr)
+        print(f"Errore: Il path '{path}' non è una directory.", file=sys.stderr)
         sys.exit(1)
     
     return path
@@ -204,7 +204,7 @@ def main() -> int:
     
     # Stampa messaggio iniziale
     if verbose:
-        print("🔍 Analyzing project...")
+        print("Analyzing project...")
         print(f"   Path: {project_path}")
         if extensions:
             print(f"   Extensions: {', '.join(sorted(extensions))}")
@@ -218,23 +218,23 @@ def main() -> int:
             ignore_dirs=set(args.ignore_dirs) if args.ignore_dirs else None
         )
     except Exception as e:
-        print(f"❌ Errore nell'inizializzazione: {e}", file=sys.stderr)
+        print(f"Error initializing analyzer: {e}", file=sys.stderr)
         return 1
     
     # Esegui l'analisi
     try:
         stats = analyzer.analyze()
     except Exception as e:
-        print(f"❌ Errore durante l'analisi: {e}", file=sys.stderr)
+        print(f"Error during analysis: {e}", file=sys.stderr)
         return 1
     
     # Verifica se ci sono file analizzati
     if stats.total_files == 0:
-        print("⚠️  Nessun file analizzato.")
-        print("   Suggerimenti:")
-        print("   - Verifica che la directory contenga file di codice")
-        print("   - Usa --ext per specificare estensioni particolari")
-        print("   - Usa --list-extensions per vedere i tipi supportati")
+        print("No files analyzed.")
+        print("   Suggestions:")
+        print("   - Check that the directory contains code files")
+        print("   - Use --ext to specify particular extensions")
+        print("   - Use --list-extensions to see supported types")
         return 0
     
     # Genera il report
