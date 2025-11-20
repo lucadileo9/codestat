@@ -77,7 +77,52 @@ PythonAnalyzer
 └── analyze()                → Orchestrazione completa
 ```
 
----
+### Flusso di Analisi Python
+
+```mermaid
+flowchart TD
+    Start([analyze chiamato]) --> CountBase[_count_lines<br/>Conta righe totali e vuote]
+    
+    CountBase --> CheckEmpty{File<br/>vuoto?}
+    CheckEmpty -->|Yes| ReturnEmpty[Ritorna FileStats<br/>con tutti 0]
+    CheckEmpty -->|No| ExtractAST[_extract_ast_info]
+    
+    ExtractAST --> ParseAST{AST Parse<br/>success?}
+    ParseAST -->|No SyntaxError| ASTFail[Ritorna False, 0, 0]
+    ParseAST -->|Yes| GetDoc[ast.get_docstring<br/>has_docstring]
+    
+    GetDoc --> WalkTree[ast.walk tree<br/>Conta ClassDef e FunctionDef]
+    WalkTree --> ASTDone[has_docstring, num_classes,<br/>num_functions]
+    
+    ASTDone --> CountComments[_count_comment_lines]
+    CountComments --> Tokenize{Tokenizer<br/>success?}
+    
+    Tokenize -->|TokenError| Fallback[_count_comment_lines_simple<br/>Pattern matching #]
+    Tokenize -->|Yes| TokenLoop[Loop su tokens<br/>Filtra COMMENT type]
+    
+    TokenLoop --> CommDone[comment_lines count]
+    Fallback --> CommDone
+    ASTFail --> CommDone
+    
+    CommDone --> CalcCode[code_lines =<br/>total - blank - comment]
+    CalcCode --> SanityCheck{code_lines<br/>< 0?}
+    
+    SanityCheck -->|Yes| SetZero[code_lines = 0]
+    SanityCheck -->|No| BuildStats[Costruisci FileStats]
+    SetZero --> BuildStats
+    
+    BuildStats --> Return[Ritorna FileStats completo<br/>con metadati Python]
+    Return --> End([Fine])
+    
+    style Start fill:#1d821d
+    style End fill:#9c0c22
+    style ExtractAST fill:#138aba
+    style CountComments fill:#138aba
+    style Tokenize fill:#cf880c
+    style BuildStats fill:#7d1a7d
+```
+
+
 
 ## 📋 Proprietà
 

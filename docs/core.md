@@ -6,6 +6,53 @@ Questa pagina documenta la classe `ProjectAnalyzer` e le sue funzionalità princ
 
 Il modulo `core.py` fornisce la logica centrale per l'analisi ricorsiva di progetti software. Coordina gli analyzer specifici per linguaggio, gestisce la scansione delle directory e costruisce la struttura dati delle statistiche del progetto.
 
+## Flusso di Analisi
+
+Il seguente diagramma illustra il flusso completo dell'analisi del progetto:
+
+```mermaid
+flowchart TD
+    Start([Inizio Analisi]) --> Init[ProjectAnalyzer inizializzato<br/>con root_path]
+    Init --> AnalyzeCall[analyze chiamato]
+    AnalyzeCall --> CheckRoot{Root path<br/>valido?}
+    
+    CheckRoot -->|No| Error[Solleva FileNotFoundError/<br/>NotADirectoryError]
+    CheckRoot -->|Yes| AnalyzeDir[_analyze_directory root]
+
+    
+    IterItems -->|Finito| SortFiles[sort_files_by_size]
+    SortFiles --> Return[Ritorna DirectoryStats]
+    Return --> End([Fine])
+    
+    AnalyzeDir --> GetItems[Ottieni elementi<br/>in directory]
+    GetItems --> IterItems{Per ogni<br/>elemento}
+    
+    IterItems --> CheckType{Tipo?}
+    CheckType -->|Directory| ShouldIgnore{_should_ignore_dir?}
+    CheckType -->|File| ShouldAnalyze{_should_analyze_file?}
+    
+    ShouldAnalyze -->|Yes| GetAnalyzer[_get_analyzer_for_file]
+    ShouldAnalyze -->|No| IterItems
+    
+    GetAnalyzer --> RunAnalyzer[analyzer.analyze]
+    RunAnalyzer --> AddFile[Aggiungi FileStats<br/>a dir_stats.files]
+    AddFile --> IterItems
+    
+    ShouldIgnore -->|No| RecursiveCall[_analyze_directory<br/>ricorsivo]
+    ShouldIgnore -->|Yes| IterItems
+    
+    RecursiveCall --> AddSubdir{Subdirectory<br/>ha file?}
+    AddSubdir -->|Yes| AddToList[Aggiungi a<br/>dir_stats.subdirectories]
+    AddSubdir -->|No| IterItems
+    AddToList --> IterItems
+    
+    
+    style Start fill:#086e08
+    style End fill:#cf0e2b
+    style Error fill:#ab2b2b
+    style RecursiveCall fill:#387f9c
+```
+
 ## Classe principale: `ProjectAnalyzer`
 
 ### Responsabilità
@@ -41,6 +88,42 @@ Restituisce l'insieme delle estensioni file supportate dagli analyzer disponibil
 
 ### Selezione degli analyzer
 Il modulo utilizza una lista di analyzer (es. `PythonAnalyzer`, `GenericAnalyzer`) e seleziona automaticamente quello più adatto per ogni file tramite il metodo `can_analyze`.
+
+#### Diagramma di Selezione Analyzer
+
+```mermaid
+sequenceDiagram
+    participant PA as ProjectAnalyzer
+    participant File as File Path
+    participant PY as PythonAnalyzer
+    participant MD as MarkdownAnalyzer
+    participant GEN as GenericAnalyzer
+    
+    PA->>File: _get_analyzer_for_file(file_path)
+    
+    PA->>PY: can_analyze(file_path)?
+    PY-->>PA: Check .py, .pyw, .pyi
+    
+    alt File is Python
+        PY-->>PA: True
+        PA->>PY: analyze(file_path)
+        PY-->>PA: FileStats (con AST info)
+    else Not Python
+        PA->>MD: can_analyze(file_path)?
+        MD-->>PA: Check .md, .markdown
+        
+        alt File is Markdown
+            MD-->>PA: True
+            PA->>MD: analyze(file_path)
+            MD-->>PA: FileStats (con Markdown stats)
+        else Not Markdown
+            PA->>GEN: can_analyze(file_path)?
+            GEN-->>PA: True (supporta tutto)
+            PA->>GEN: analyze(file_path)
+            GEN-->>PA: FileStats (analisi base)
+        end
+    end
+```
 
 ### Esempio d'uso
 ```python

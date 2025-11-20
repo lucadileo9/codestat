@@ -10,6 +10,59 @@
 Definisce l'**interfaccia comune** che tutti gli analyzer devono implementare.  
 Fornisce metodi helper condivisi per evitare duplicazione di codice.
 
+## Architettura Strategy Pattern
+
+```mermaid
+classDiagram
+    class BaseAnalyzer {
+        <<abstract>>
+        +supported_extensions: Set~str~*
+        +language_name: str*
+        +can_analyze(file_path) bool
+        +analyze(file_path)* FileStats
+        #_count_lines(file_path) tuple
+    }
+    
+    class PythonAnalyzer {
+        +supported_extensions: Set~str~
+        +language_name: str
+        +analyze(file_path) FileStats
+        -_extract_ast_info() tuple
+        -_count_comment_lines() int
+    }
+    
+    class MarkdownAnalyzer {
+        +supported_extensions: Set~str~
+        +language_name: str
+        +analyze(file_path) FileStats
+        -_parse_markdown_structure() dict
+    }
+    
+    class GenericAnalyzer {
+        +supported_extensions: Set~str~
+        +language_name: str
+        +analyze(file_path) FileStats
+        -_detect_comment_patterns() list
+    }
+    
+    class ProjectAnalyzer {
+        -analyzers: List~BaseAnalyzer~
+        +analyze() DirectoryStats
+        -_get_analyzer_for_file() BaseAnalyzer
+    }
+    
+    BaseAnalyzer <|-- PythonAnalyzer
+    BaseAnalyzer <|-- MarkdownAnalyzer
+    BaseAnalyzer <|-- GenericAnalyzer
+    ProjectAnalyzer o-- BaseAnalyzer : uses
+    
+    note for BaseAnalyzer "Classe astratta che definisce
+    l'interfaccia comune."
+    
+    note for ProjectAnalyzer "Mantiene lista di analyzer
+    e seleziona il più appropriato"
+```
+
 ---
 
 ## 📐 Classe Astratta
