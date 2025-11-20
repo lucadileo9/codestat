@@ -62,4 +62,4 @@ print(stats.summary())
 
 ---
 
-Per dettagli sulle statistiche e i modelli dati, vedi la documentazione di `models.md`.
+Per dettagli sulle statistiche e i modelli dati, vedi la documentazione di [`models.md`](models.md).

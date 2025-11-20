@@ -25,13 +25,13 @@ Per ogni file Markdown l'analyzer restituisce un `FileStats` (come per gli altri
 
 Nota: `FileStats` contiene le proprietà base (total_lines, code_lines, blank_lines). I metadati Markdown sono aggiunti dinamicamente a `file_stats.markdown_stats` per evitare di cambiare il modello dati centrale.
 
-## Come funziona (breve)
+## Come funziona
 
 - Legge il file linea per linea usando l'helper di `BaseAnalyzer` per supportare diversi encoding.
 - Ignora il contenuto interno ai blocchi di codice fenced quando rileva headings/links.
 - Usa espressioni regolari semplici per identificare heading, link, immagini e la riga divider delle tabelle.
 
-Queste euristiche sono deliberate: sono rapide e non richiedono librerie aggiuntive. Per esigenze più sofisticate è possibile integrare un parser Markdown (vedi "Possibili miglioramenti").
+Queste euristiche sono deliberate: sono rapide e non richiedono librerie aggiuntive. Per esigenze più sofisticate è possibile integrare un parser Markdown.
 
 ## Esempio di output (ConsoleReporter)
 
@@ -70,4 +70,4 @@ python -m project_analyzer C:\percorso\al\progetto
 
 ---
 
-Per dettagli sul modello `FileStats` e su come vengono aggregate le statistiche di directory, vedi `docs/models.md` e la documentazione del `core`.
+Per dettagli sul modello `FileStats` e su come vengono aggregate le statistiche di directory, vedi la documentazione di [`models.md`](models.md).
