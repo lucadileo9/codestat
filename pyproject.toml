@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "lucadileo9", email = "your.email@example.com"}
+    {name = "lucadileo9", email = "lucadileo70@gmail.com"}
 ]
 keywords = ["code", "analysis", "statistics", "cli", "development"]
 classifiers = [
