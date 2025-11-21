@@ -1,0 +1,57 @@
+name: Documentation
+description: Migliora o suggerisci documentazione
+title: "[DOCS] "
+labels: ["documentation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Aiutaci a migliorare la documentazione!
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Tipo di Documentazione
+      options:
+        - "README"
+        - "API Reference"
+        - "Tutorial/Guide"
+        - "Code Comments"
+        - "Examples"
+        - "Contributing Guide"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: Problema Attuale
+      description: Cosa manca o non è chiaro?
+      placeholder: "La documentazione non spiega..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Miglioramento Suggerito
+      description: Come miglioreresti la documentazione?
+      placeholder: "Suggerirei di aggiungere..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Posizione
+      description: Dove si trova la documentazione da migliorare?
+      placeholder: "README.md, linea 42 / docs/api.md"
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribuzione
+      options:
+        - label: Posso scrivere questa documentazione
