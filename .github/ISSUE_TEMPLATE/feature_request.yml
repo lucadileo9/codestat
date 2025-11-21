@@ -1,0 +1,76 @@
+name: Feature Request
+description: Suggerisci una nuova funzionalità
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie per il suggerimento! Descrivi la feature che vorresti vedere.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema da Risolvere
+      description: Quale problema questa feature risolverebbe?
+      placeholder: "Sono sempre frustrato quando..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Soluzione Proposta
+      description: Come vorresti che funzionasse?
+      placeholder: "Vorrei poter..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Considerate
+      description: Hai considerato soluzioni alternative?
+      placeholder: "Un'alternativa potrebbe essere..."
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Esempi di Utilizzo
+      description: Mostra come useresti questa feature
+      render: python
+      placeholder: |
+        # Example
+        from project_analyzer import ProjectAnalyzer
+        analyzer = ProjectAnalyzer()
+        analyzer.new_feature()
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorità
+      description: Quanto è importante per te?
+      options:
+        - "Nice to have"
+        - "Importante"
+        - "Critica"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribuzione
+      options:
+        - label: Sono disponibile a lavorare su questa feature
+        - label: Posso aiutare con la documentazione
+        - label: Posso aiutare con i test
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contesto Aggiuntivo
+      description: Altre informazioni utili
+      placeholder: "Links, references, mockups..."
