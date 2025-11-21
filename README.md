@@ -1,7 +1,7 @@
 # 📊 CodeStat - Project Analyzer
 
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 **CodeStat** è uno strumento da riga di comando per analizzare e generare statistiche dettagliate su progetti software. Fornisce agli sviluppatori una panoramica completa e immediata della struttura, dimensione e composizione del loro codice.
 
