@@ -1,0 +1,107 @@
+name: Bug Report
+description: Segnala un bug o comportamento inatteso
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie per aver segnalato un bug! Compila tutti i campi per aiutarci a riprodurlo.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrizione del Bug
+      description: Descrizione chiara e concisa del problema
+      placeholder: "Cosa è andato storto?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps per Riprodurre
+      description: Come possiamo riprodurre il bug?
+      placeholder: |
+        1. Esegui comando '...'
+        2. Con file '...'
+        3. Vedi errore
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento Atteso
+      description: Cosa ti aspettavi che accadesse?
+      placeholder: "Descrivilo qui"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamento Attuale
+      description: Cosa è successo invece?
+      placeholder: "Descrivilo qui"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log/Output
+      description: Copia e incolla l'output dell'errore
+      render: shell
+      placeholder: |
+        Traceback (most recent call last):
+          File "...", line X, in ...
+        Error: ...
+
+  - type: input
+    id: version
+    attributes:
+      label: Versione CodeStat
+      description: Quale versione stai usando?
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Versione Python
+      description: Output di `python --version`
+      placeholder: "3.11.0"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Sistema Operativo
+      description: OS e versione
+      placeholder: "Ubuntu 22.04, macOS 14.0, Windows 11"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contesto Aggiuntivo
+      description: Altre informazioni utili
+      placeholder: "Screenshots, configurazioni speciali, ecc."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: Ho cercato issue simili esistenti
+          required: true
+        - label: Ho testato con l'ultima versione di CodeStat
+          required: true
+        - label: Ho incluso tutti i dettagli necessari
+          required: true
