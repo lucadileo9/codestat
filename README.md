@@ -115,6 +115,71 @@ codestat/
 └── LICENSE
 ```
 
+## 🏗️ Architettura
+
+CodeStat utilizza un'architettura modulare basata sul **Strategy Pattern** per gestire diversi tipi di file:
+
+```mermaid
+graph TB
+    subgraph CLI["🖥️ CLI Layer"]
+        CLI_Module[cli.py<br/>Argument parsing]
+    end
+    
+    subgraph Core["⚙️ Core Logic"]
+        PA[ProjectAnalyzer<br/>Coordina l'analisi]
+        Reporter[ConsoleReporter<br/>Formattazione output]
+    end
+    
+    subgraph Analyzers["🔍 Strategy Pattern - Analyzers"]
+        Base[BaseAnalyzer<br/>Interfaccia astratta]
+        Python[PythonAnalyzer<br/>AST analysis]
+        Markdown[MarkdownAnalyzer<br/>MD parsing]
+        Generic[GenericAnalyzer<br/>Fallback]
+        
+        Base -.implements.-> Python
+        Base -.implements.-> Markdown
+        Base -.implements.-> Generic
+    end
+    
+    subgraph Models["📊 Data Models"]
+        FileStats[FileStats<br/>Singolo file]
+        DirStats[DirectoryStats<br/>Struttura ad albero]
+        
+        DirStats -->|contains| FileStats
+        DirStats -->|contains| DirStats
+    end
+    
+    CLI_Module --> PA
+    PA --> Base
+    PA --> Reporter
+    Python --> FileStats
+    Markdown --> FileStats
+    Generic --> FileStats
+    PA --> DirStats
+    Reporter --> DirStats
+    
+    style CLI_Module fill:#E3F2FD
+    style PA fill:#FFF3E0
+    style Reporter fill:#F3E5F5
+    style Base fill:#E8F5E9
+    style Python fill:#C8E6C9
+    style Markdown fill:#C8E6C9
+    style Generic fill:#C8E6C9
+    style FileStats fill:#FFE0B2
+    style DirStats fill:#FFE0B2
+```
+
+### Flusso di Esecuzione
+
+1. **CLI** riceve comandi e opzioni dall'utente
+2. **ProjectAnalyzer** scandisce ricorsivamente le directory
+3. Per ogni file, seleziona l'**Analyzer** appropriato (Python, Markdown, o Generic)
+4. Ogni analyzer produce un **FileStats**
+5. Le statistiche vengono aggregate in una struttura **DirectoryStats** ad albero
+6. **ConsoleReporter** formatta e visualizza i risultati
+
+
+
 ## 🛠️ Linguaggi Supportati
 
 | Linguaggio | Estensioni | Analisi Avanzata |
